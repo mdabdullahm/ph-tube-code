@@ -1,5 +1,11 @@
 console.log('video script added');
-
+function getTimeString(time) {
+    const hour = parseInt(time / 3600);
+    let remainingSecond = time % 3600;
+    const minute = parseInt(remainingSecond / 60);
+    remainingSecond = remainingSecond % 60;
+    return `${hour} hour ${minute} minute ${remainingSecond} second ago`;
+}
 // create loadCategories
 const loadCategories = () => {
     // fetch the data
@@ -48,7 +54,10 @@ const DisplayVideos = (videos) => {
       src=${video.thumbnail}
       class="h-full w-full object-cover"
       alt="Shoes" />
-      <span class="absolute right-2 bottom-2 bg-orange-600 rounded text-black p-1">${video.others.posted_date}</span>
+      ${
+        video.others.posted_date?.length == 0 ? "" : `<span class="absolute right-2 bottom-2 bg-orange-600 text-black rounded p-1">${getTimeString(video.others.posted_date)}</span>`
+      }
+      
     </figure>
     <div class="px-0 py-2 flex gap-2">
        <div>
