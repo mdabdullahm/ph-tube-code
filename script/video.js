@@ -23,6 +23,13 @@ const loadVideos = () => {
     .Catch((error) => console.log(error));
 };
 
+const loadCategoryVideos = (id) => {
+    // alert(id);
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
+    .then((res) => res.json())
+    .then((data) => DisplayVideos(data.category))
+    .Catch((error) => console.log(error));
+};
 // const cardDemo = {
 //     "category_id": "1001",
 //     "video_id": "aaad",
@@ -44,6 +51,7 @@ const loadVideos = () => {
 
 const DisplayVideos = (videos) => {
     const videosContainer= document.getElementById("videos");
+    videosContainer.innerHTML = "";
     videos.forEach((video) => {
     console.log(video);
     const card = document.createElement("div");
@@ -55,7 +63,7 @@ const DisplayVideos = (videos) => {
       class="h-full w-full object-cover"
       alt="Shoes" />
       ${
-        video.others.posted_date?.length == 0 ? "" : `<span class="absolute right-2 bottom-2 bg-orange-600 text-black rounded p-1">${getTimeString(video.others.posted_date)}</span>`
+        video.others.posted_date?.length == 0 ? "" : `<span class="absolute text-xs right-2 bottom-2 bg-orange-600 text-black rounded p-1">${getTimeString(video.others.posted_date)}</span>`
       }
       
     </figure>
@@ -85,10 +93,15 @@ const DisplayCategories = (categories) => {
     categories.forEach((item) =>{
         console.log(item);
 
-        const button = document.createElement("button");
-        button.classList = "btn";
-        button.innerText = item.category;
-        categoryContainer.append(button);
+        const buttonContainer = document.createElement("div");
+        buttonContainer.innerHTML = `
+        <button onclick="loadCategoryVideos(${item.category_id})" class="btn">
+        ${item.category}
+        </button>
+        `
+        
+        // add button to catagory container
+        categoryContainer.append(buttonContainer);
     });
 };
 
