@@ -6,6 +6,13 @@ function getTimeString(time) {
     remainingSecond = remainingSecond % 60;
     return `${hour} hour ${minute} minute ${remainingSecond} second ago`;
 }
+const removeActiveClass=() => {
+  const button= document.getElementsByClassName("category-btn");
+  console.log(button);
+  for(let btn of button){
+    btn.classList.remove("active");
+  }
+}
 // create loadCategories
 const loadCategories = () => {
     // fetch the data
@@ -27,7 +34,12 @@ const loadCategoryVideos = (id) => {
     // alert(id);
     fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
     .then((res) => res.json())
-    .then((data) => DisplayVideos(data.category))
+    .then((data) => {
+        removeActiveClass();
+        const activeBtn = document.getElementById(`btn-${id}`);
+        activeBtn.classList.add("active");
+      DisplayVideos(data.category);
+    })
     .Catch((error) => console.log(error));
 };
 // const cardDemo = {
@@ -110,10 +122,10 @@ const DisplayCategories = (categories) => {
 
         const buttonContainer = document.createElement("div");
         buttonContainer.innerHTML = `
-        <button onclick="loadCategoryVideos(${item.category_id})" class="btn">
+        <button id="btn-${item.category_id}" onclick="loadCategoryVideos(${item.category_id})" class="btn category-btn">
         ${item.category}
         </button>
-        `
+        `;
         
         // add button to catagory container
         categoryContainer.append(buttonContainer);
